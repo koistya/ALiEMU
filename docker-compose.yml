@@ -1,0 +1,25 @@
+app:
+    build: .
+    ports:
+        - "8080:8080"
+    volumes:
+        - ~/path/to/dist:/app # TODO FIX this
+    links:
+        - postgres
+    environment:
+        NODE_ENV: production # TODO: different instance for development
+postgres:
+    image: postgres
+    environment:
+        POSTGRES_PASSWORD: password
+        POSTGRES_USER: user
+        POSTGRES_DB: aliemu
+# ---- CONSIDER IMPLEMENTING BELOW ----
+#   volumes-from:
+#       - data
+# redis:
+#     image: redis
+# data:
+#     image: busybox
+#     volumes:
+#         - /path/to/postgres/data

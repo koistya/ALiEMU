@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "es6",
+        "moduleResolution": "node",
+        "isolatedModules": false,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true
+    },
+    "filesGlob": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.d.ts",
+        "!node_modules/**"
+    ],
+    "compileOnSave": false,
+    "buildOnSave": false,
+    "files": [],
+    "atom": {
+        "rewriteTsconfig": true
+    },
+    "awesomeTypescriptLoaderOptions": {
+        "library": "es6",
+        "useBabel": true
+    }
+}
