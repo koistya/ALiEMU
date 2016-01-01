@@ -1,15 +1,19 @@
-var path = require('path');
-var webpack = require('webpack');
+var path = require('path'),
+    autoprefixer = require('autoprefixer'),
+    webpack = require('webpack'),
+    HTMLwebpackPlugin = require('html-webpack-plugin');
+
+const PATHS = {
+  app: path.resolve(__dirname, 'app'),
+  dist: path.join(__dirname, 'dist')
+};
 
 module.exports = {
   devtool: 'source-map',
-  entry: [
-    './src/index'
-  ],
+  entry: path.resolve(PATHS.app, 'app.js'),
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js',
-    publicPath: '/static/'
+    path: PATHS.dist,
+    filename: 'bundle.js'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
@@ -22,13 +26,45 @@ module.exports = {
       compressor: {
         warnings: false
       }
+    }),
+    new HTMLwebpackPlugin({
+      title: 'ALiEMU',
+      template: path.resolve(PATHS.app, 'index.templ.html'),
+      inject: 'body'
     })
   ],
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loaders: ['babel'],
-      include: path.join(__dirname, 'src')
-    }]
+    loaders: [
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        loader: 'awesome-typescript-loader',
+        query: {
+          plugins: ['./utils/babelRelayPlugin']
+        }
+      },
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        loader: 'babel',
+        query: {
+          plugins: ['./utils/babelRelayPlugin']
+        }
+      },
+      {
+        test: /\.scss$/,
+        loaders: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+      },
+      {
+        test: /\.css$/,
+        loaders: ['style-loader', 'css-loader', 'postcss-loader']
+      }
+    ]
+  },
+  postcss: function() { //eslint-disable-line
+    return [autoprefixer];
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx', '.ts', '.tsx']
   }
 };

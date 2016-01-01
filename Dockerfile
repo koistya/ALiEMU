@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
 RUN ln -sf /usr/bin/nodejs /usr/bin/node
 
 # Install the "n" nodejs version manager and update to the latest version
-RUN npm i -g n nodemon \
+RUN npm i -g n \
     && n latest
 
 RUN mkdir -p /app

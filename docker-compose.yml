@@ -3,23 +3,20 @@ app:
     ports:
         - "8080:8080"
     volumes:
-        - ./dist:/app # TODO FIX this
+        - ./dist:/app/dist
+        - ./server:/app/server
     links:
         - postgres
-    environment:
-        NODE_ENV: production # TODO: different instance for development
 postgres:
     image: postgres
     environment:
-        POSTGRES_PASSWORD: password
-        POSTGRES_USER: user
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_USER: postgres
         POSTGRES_DB: aliemu
-# ---- CONSIDER IMPLEMENTING BELOW ----
-#   volumes-from:
-#       - data
-# redis:
-#     image: redis
-# data:
-#     image: busybox
-#     volumes:
-#         - /path/to/postgres/data
+        PGDATA: /var/lib/postgresql/data/pgdata
+    volumes_from:
+        - data
+data:
+    image: busybox
+    volumes:
+        - /var/lib/postgresql/data/pgdata

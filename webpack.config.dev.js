@@ -1,5 +1,4 @@
 var path = require('path'),
-    autoprefixer = require('autoprefixer'),
     webpack = require('webpack');
 
 module.exports = {
@@ -38,16 +37,13 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.css$/,
-        loaders: ['style-loader', 'css-loader', 'postcss-loader']
+        loaders: ['style-loader', 'css-loader']
       }
     ]
-  },
-  postcss: function() { //eslint-disable-line
-    return [autoprefixer];
   },
   resolve: {
     extensions: ['', '.js', '.jsx', '.ts', '.tsx']

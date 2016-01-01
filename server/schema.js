@@ -1,22 +1,11 @@
-/**
- *  Copyright (c) 2015, Facebook, Inc.
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree. An additional grant
- *  of patent rights can be found in the PATENTS file in the same directory.
- */
-
+/* @flow */
 import {
-  GraphQLBoolean,
-  GraphQLFloat,
-  GraphQLID,
-  GraphQLInt,
-  GraphQLList,
-  GraphQLNonNull,
   GraphQLObjectType,
-  GraphQLSchema,
+  GraphQLInt,
   GraphQLString,
+  GraphQLList,
+  GraphQLSchema,
+  GraphQLNonNull
 } from 'graphql';
 
 import {
@@ -29,115 +18,134 @@ import {
   nodeDefinitions,
 } from 'graphql-relay';
 
-import {
-  // Import methods that your schema can use to interact with your database
-  User,
-  Widget,
-  getUser,
-  getViewer,
-  getWidget,
-  getWidgets,
-} from './database';
+import Db from './database';
 
-/**
- * We get the node interface and field from the Relay library.
- *
- * The first method defines the way we resolve an ID to its object.
- * The second defines the way we resolve an object to its GraphQL type.
- */
-var {nodeInterface, nodeField} = nodeDefinitions(
-  (globalId) => {
-    var {type, id} = fromGlobalId(globalId);
-    if (type === 'User') {
-      return getUser(id);
-    } else if (type === 'Widget') {
-      return getWidget(id);
-    } else {
-      return null;
-    }
-  },
-  (obj) => {
-    if (obj instanceof User) {
-      return userType;
-    } else if (obj instanceof Widget)  {
-      return widgetType;
-    } else {
-      return null;
-    }
-  }
-);
-
-/**
- * Define your own types here
- */
-
-var userType = new GraphQLObjectType({
-  name: 'User',
-  description: 'A person who uses our app',
+const Person = new GraphQLObjectType({
+  name: 'Person',
+  description: 'This represents a person',
   fields: () => ({
-    id: globalIdField('User'),
-    widgets: {
-      type: widgetConnection,
-      description: 'A person\'s collection of widgets',
-      args: connectionArgs,
-      resolve: (_, args) => connectionFromArray(getWidgets(), args),
+    id: {
+      type: GraphQLInt,
+      resolve(person) {
+        return person.id;
+      }
     },
-  }),
-  interfaces: [nodeInterface],
-});
-
-var widgetType = new GraphQLObjectType({
-  name: 'Widget',
-  description: 'A shiny widget',
-  fields: () => ({
-    id: globalIdField('Widget'),
-    name: {
+    firstName: {
       type: GraphQLString,
-      description: 'The name of the widget',
+      resolve(person) {
+        return person.firstName;
+      }
     },
-  }),
-  interfaces: [nodeInterface],
-});
-
-/**
- * Define your own connection types here
- */
-var {connectionType: widgetConnection} =
-  connectionDefinitions({name: 'Widget', nodeType: widgetType});
-
-/**
- * This is the type that will be the root of our query,
- * and the entry point into our schema.
- */
-var queryType = new GraphQLObjectType({
-  name: 'Query',
-  fields: () => ({
-    node: nodeField,
-    // Add your own root fields here
-    viewer: {
-      type: userType,
-      resolve: () => getViewer(),
+    lastName: {
+      type: GraphQLString,
+      resolve(person) {
+        return person.lastName;
+      }
     },
-  }),
-});
-
-/**
- * This is the type that will be the root of our mutations,
- * and the entry point into performing writes in our schema.
- */
-var mutationType = new GraphQLObjectType({
-  name: 'Mutation',
-  fields: () => ({
-    // Add your own mutations here
+    email: {
+      type: GraphQLString,
+      resolve(person) {
+        return person.email;
+      }
+    },
+    posts: {
+      type: new GraphQLList(Post),
+      resolve(person) {
+        return person.getPosts();
+      }
+    }
   })
 });
 
-/**
- * Finally, we construct our schema (whose starting query type is the query
- * type we defined above) and export it.
- */
-export var Schema = new GraphQLSchema({
-  query: queryType,
-  // Uncomment the following after adding some mutation fields:
-  // mutation: mutationType
+const Post = new GraphQLObjectType({
+  name: 'Post',
+  description: 'This represents a post',
+  fields: () => ({
+    id: {
+      type: GraphQLInt,
+      resolve(person) {
+        return person.id;
+      }
+    },
+    title: {
+      type: GraphQLString,
+      resolve(post) {
+        return post.title;
+      }
+    },
+    content: {
+      type: GraphQLString,
+      resolve(post) {
+        return post.content;
+      }
+    },
+    author: {
+      type: Person,
+      resolve(post) {
+        return post.getPerson();
+      }
+    }
+  })
 });
+
+const Query = new GraphQLObjectType({
+  name: 'Query',
+  description: 'This is the root query',
+  fields: () => ({
+    people: {
+      type: new GraphQLList(Person),
+      args: {
+        id: {
+          type: GraphQLInt
+        },
+        email: {
+          type: GraphQLString
+        }
+      },
+      resolve(root, args) {
+        return Db.models.person.findAll({ where: args });
+      }
+    },
+    posts: {
+      type: new GraphQLList(Post),
+      resolve(root, args) {
+        return Db.models.post.findAll({ where: args })
+      }
+    }
+  })
+});
+
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  description: 'Functions to create stuff',
+  fields: () => ({
+    addPerson: {
+      type: Person,
+      args: {
+        firstName: {
+          type: new GraphQLNonNull(GraphQLString),
+        },
+        lastName: {
+          type: new GraphQLNonNull(GraphQLString),
+        },
+        email: {
+          type: new GraphQLNonNull(GraphQLString),
+        }
+      },
+      resolve(_, args) {
+        return Db.models.person.create({
+          firstName: args.firstName,
+          lastName: args.lastName,
+          email: args.email.toLowerCase()
+        });
+      }
+    }
+  })
+})
+
+const Schema = new GraphQLSchema({
+  query: Query,
+  mutation: Mutation
+});
+
+export default Schema;

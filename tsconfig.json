@@ -22,7 +22,15 @@
     ],
     "compileOnSave": false,
     "buildOnSave": false,
-    "files": [],
+    "files": [
+        "temp/db.ts",
+        "typings/bluebird/bluebird.d.ts",
+        "typings/faker/faker.d.ts",
+        "typings/lodash/lodash.d.ts",
+        "typings/sequelize/sequelize.d.ts",
+        "typings/tsd.d.ts",
+        "typings/validator/validator.d.ts"
+    ],
     "atom": {
         "rewriteTsconfig": true
     },
