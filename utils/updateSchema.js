@@ -1,14 +1,15 @@
-#!/usr/bin/env babel-node --optional es7.asyncFunctions
-
 import fs from 'fs';
 import path from 'path';
-import { Schema } from '../server/schema';
+import SchemaQuery from '../server/schema';
+import { getSchema } from '@risingstack/graffiti-mongoose';
 import { graphql }  from 'graphql';
 import { introspectionQuery, printSchema } from 'graphql/utilities';
 
+const Schema = getSchema(SchemaQuery);
+
 // Save JSON of full schema introspection for Babel Relay Plugin to use
 (async () => {
-  var result = await (graphql(Schema, introspectionQuery));
+  const result = await (graphql(Schema, introspectionQuery));
   if (result.errors) {
     console.error(
       'ERROR introspecting schema: ',

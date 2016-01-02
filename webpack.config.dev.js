@@ -22,18 +22,12 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        loader: 'awesome-typescript-loader',
-        query: {
-          plugins: ['./utils/babelRelayPlugin']
-        }
+        loader: 'awesome-typescript-loader'
       },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          plugins: ['./utils/babelRelayPlugin']
-        }
+        loader: 'babel'
       },
       {
         test: /\.scss$/,

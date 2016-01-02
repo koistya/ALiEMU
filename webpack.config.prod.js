@@ -38,26 +38,20 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        loader: 'awesome-typescript-loader',
-        query: {
-          plugins: ['./utils/babelRelayPlugin']
-        }
+        loader: 'awesome-typescript-loader'
       },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          plugins: ['./utils/babelRelayPlugin']
-        }
+        loader: 'babel'
       },
       {
         test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+        loaders: ['style', 'css', 'postcss', 'sass']
       },
       {
         test: /\.css$/,
-        loaders: ['style-loader', 'css-loader', 'postcss-loader']
+        loaders: ['style', 'css', 'postcss']
       }
     ]
   },

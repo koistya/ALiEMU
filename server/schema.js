@@ -1,151 +1,21 @@
-/* @flow */
-import {
-  GraphQLObjectType,
-  GraphQLInt,
-  GraphQLString,
-  GraphQLList,
-  GraphQLSchema,
-  GraphQLNonNull
-} from 'graphql';
+import mongoose from 'mongoose';
 
-import {
-  connectionArgs,
-  connectionDefinitions,
-  connectionFromArray,
-  fromGlobalId,
-  globalIdField,
-  mutationWithClientMutationId,
-  nodeDefinitions,
-} from 'graphql-relay';
-
-import Db from './database';
-
-const Person = new GraphQLObjectType({
-  name: 'Person',
-  description: 'This represents a person',
-  fields: () => ({
-    id: {
-      type: GraphQLInt,
-      resolve(person) {
-        return person.id;
-      }
-    },
-    firstName: {
-      type: GraphQLString,
-      resolve(person) {
-        return person.firstName;
-      }
-    },
-    lastName: {
-      type: GraphQLString,
-      resolve(person) {
-        return person.lastName;
-      }
-    },
-    email: {
-      type: GraphQLString,
-      resolve(person) {
-        return person.email;
-      }
-    },
-    posts: {
-      type: new GraphQLList(Post),
-      resolve(person) {
-        return person.getPosts();
-      }
-    }
-  })
+const UserSchema = new mongoose.Schema({
+  widgets: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Widget'
+  }]
 });
 
-const Post = new GraphQLObjectType({
-  name: 'Post',
-  description: 'This represents a post',
-  fields: () => ({
-    id: {
-      type: GraphQLInt,
-      resolve(person) {
-        return person.id;
-      }
-    },
-    title: {
-      type: GraphQLString,
-      resolve(post) {
-        return post.title;
-      }
-    },
-    content: {
-      type: GraphQLString,
-      resolve(post) {
-        return post.content;
-      }
-    },
-    author: {
-      type: Person,
-      resolve(post) {
-        return post.getPerson();
-      }
-    }
-  })
+const WidgetSchema = new mongoose.Schema({
+  name: {
+    type: String
+  }
 });
 
-const Query = new GraphQLObjectType({
-  name: 'Query',
-  description: 'This is the root query',
-  fields: () => ({
-    people: {
-      type: new GraphQLList(Person),
-      args: {
-        id: {
-          type: GraphQLInt
-        },
-        email: {
-          type: GraphQLString
-        }
-      },
-      resolve(root, args) {
-        return Db.models.person.findAll({ where: args });
-      }
-    },
-    posts: {
-      type: new GraphQLList(Post),
-      resolve(root, args) {
-        return Db.models.post.findAll({ where: args })
-      }
-    }
-  })
-});
 
-const Mutation = new GraphQLObjectType({
-  name: 'Mutation',
-  description: 'Functions to create stuff',
-  fields: () => ({
-    addPerson: {
-      type: Person,
-      args: {
-        firstName: {
-          type: new GraphQLNonNull(GraphQLString),
-        },
-        lastName: {
-          type: new GraphQLNonNull(GraphQLString),
-        },
-        email: {
-          type: new GraphQLNonNull(GraphQLString),
-        }
-      },
-      resolve(_, args) {
-        return Db.models.person.create({
-          firstName: args.firstName,
-          lastName: args.lastName,
-          email: args.email.toLowerCase()
-        });
-      }
-    }
-  })
-})
+const User = mongoose.model('User', UserSchema);
+const Widget = mongoose.model('Widget', WidgetSchema);
 
-const Schema = new GraphQLSchema({
-  query: Query,
-  mutation: Mutation
-});
 
-export default Schema;
+export default [User, Widget];
