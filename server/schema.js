@@ -1,6 +1,12 @@
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
+  id: {
+    type: mongoose.Schema.Types.ObjectId
+  },
+  name: {
+    type: String
+  },
   widgets: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Widget'
@@ -8,6 +14,9 @@ const UserSchema = new mongoose.Schema({
 });
 
 const WidgetSchema = new mongoose.Schema({
+  id: {
+    type: mongoose.Schema.Types.ObjectId
+  },
   name: {
     type: String
   }

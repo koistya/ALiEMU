@@ -19,7 +19,7 @@ class App extends React.Component {
 export default Relay.createContainer(App, {
   fragments: {
     viewer: () => Relay.QL`
-      fragment on User {
+      fragment on Viewer {
         widgets(first: 10) {
           edges {
             node {

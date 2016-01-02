@@ -32,7 +32,7 @@
   "homepage": "https://github.com/AcademicLifeInEM/ALiEMU#readme",
   "dependencies": {
     "@risingstack/graffiti": "^2.1.2",
-    "@risingstack/graffiti-mongoose": "^5.0.2",
+    "@risingstack/graffiti-mongoose": "^5.0.3",
     "babel": "^6.3.26",
     "babel-cli": "^6.3.17",
     "babel-polyfill": "^6.3.14",
@@ -93,13 +93,24 @@
         "presets": [
           "react-hmre"
         ],
-        "plugins": [["react-transform", {
-          "transforms": [{
-            "transform": "react-transform-hmr",
-            "imports": ["react"],
-            "locals": ["module"]
-            }]
-          }]]
+        "plugins": [
+          [
+            "react-transform",
+            {
+              "transforms": [
+                {
+                  "transform": "react-transform-hmr",
+                  "imports": [
+                    "react"
+                  ],
+                  "locals": [
+                    "module"
+                  ]
+                }
+              ]
+            }
+          ]
+        ]
       }
     }
   }

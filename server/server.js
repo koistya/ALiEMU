@@ -21,16 +21,15 @@ mongoose.connect(MONGO_URI);
 const User = mongoose.model('User');
 const Widget = mongoose.model('Widget');
 
-var user = new User({});
+// var user = new User({ name: Faker.name.findName(), widgets: [] });
+User.create({ name: Faker.name.findName(), widgets: [] });
 
+var widgetArr = [];
 _.times(10, () => {
-  let widget = new Widget({
-    name: Faker.hacker.phrase()
-  });
-  user.widgets.push(widget);
+  widgetArr.push({ name: Faker.hacker.phrase() });
 });
 
-user.save(function(err) {
+Widget.create(...widgetArr, function(err) {
   if (err) {
     throw err;
   }
