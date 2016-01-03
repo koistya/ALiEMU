@@ -8,7 +8,6 @@ import webpack from 'webpack';
 import * as config from '../utils/webpack.config.dev';
 import _ from 'lodash';
 import Faker from 'faker';
-// import graphQLHTTP from 'express-graphql';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const APP_PORT = process.env.PORT || 8080;
@@ -24,7 +23,18 @@ mongoose.connect(MONGO_URI);
 const User = mongoose.model('User');
 const Widget = mongoose.model('Widget');
 
-// var user = new User({ name: Faker.name.findName(), widgets: [] });
+User.find().remove((err) => {
+  if (err) {
+    throw err;
+  }
+});
+
+Widget.find().remove((err) => {
+  if (err) {
+    throw err;
+  }
+});
+
 User.create({ name: Faker.name.findName(), widgets: [] });
 
 var widgetArr = [];
