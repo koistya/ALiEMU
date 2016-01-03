@@ -5,14 +5,17 @@ import mongoose from 'mongoose';
 import Schema from './schema';
 import path from 'path';
 import webpack from 'webpack';
-import * as config from '../webpack.config.dev.js';
+import * as config from '../utils/webpack.config.dev';
 import _ from 'lodash';
 import Faker from 'faker';
 // import graphQLHTTP from 'express-graphql';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const APP_PORT = process.env.PORT || 8080;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/graphql';
+const MONGO_ADDR = process.env.AU2_MONGODB_1_PORT_27017_TCP_ADDR || null;
+const MONGO_PORT = process.env.AU2_MONGODB_1_PORT_27017_TCP_PORT || null;
+const MONGO_URI = MONGO_ADDR ? `mongodb://${MONGO_ADDR}:${MONGO_PORT}/graphql`
+                             : 'mongodb://localhost/graphql';
 const OUTPUT_DIR = path.resolve(__dirname, '..', 'dist');
 const app = express();
 

@@ -1,22 +1,10 @@
 app:
     build: .
-    ports:
-        - "8080:8080"
-    volumes:
-        - ./dist:/app/dist
-        - ./server:/app/server
     links:
-        - postgres
-postgres:
-    image: postgres
-    environment:
-        POSTGRES_PASSWORD: postgres
-        POSTGRES_USER: postgres
-        POSTGRES_DB: aliemu
-        PGDATA: /var/lib/postgresql/data/pgdata
-    volumes_from:
-        - data
+        - mongodb
+mongodb:
+    image: mongo
 data:
     image: busybox
     volumes:
-        - /var/lib/postgresql/data/pgdata
+        - /data/db

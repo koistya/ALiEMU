@@ -4,13 +4,13 @@ var path = require('path'),
     HTMLwebpackPlugin = require('html-webpack-plugin');
 
 const PATHS = {
-  app: path.resolve(__dirname, 'app'),
-  dist: path.join(__dirname, 'dist')
+  app: path.join(__dirname, '..', '/app'),
+  dist: path.join(__dirname, '..', '/dist')
 };
 
 module.exports = {
   devtool: 'source-map',
-  entry: path.resolve(PATHS.app, 'app.js'),
+  entry: path.join(PATHS.app, 'app.js'),
   output: {
     path: PATHS.dist,
     filename: 'bundle.js'
@@ -29,7 +29,7 @@ module.exports = {
     }),
     new HTMLwebpackPlugin({
       title: 'ALiEMU',
-      template: path.resolve(PATHS.app, 'index.templ.html'),
+      template: path.join(PATHS.app, 'index.templ.html'),
       inject: 'body'
     })
   ],

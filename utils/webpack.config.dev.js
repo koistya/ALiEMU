@@ -6,10 +6,10 @@ module.exports = {
   entry: [
     'eventsource-polyfill',
     'webpack-hot-middleware/client',
-    path.resolve(__dirname, 'app', 'app.js')
+    path.join(__dirname, '..', 'app/app.js')
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, '..', '/dist'),
     filename: 'bundle.js',
     publicPath: '/dist/'
   },

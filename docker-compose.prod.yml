@@ -1,0 +1,15 @@
+app:
+    ports:
+        - "8080:8080"
+    volumes:
+        - ./app:/app/app
+        - ./dist:/app/dist
+        - ./server:/app/server
+        - ./utils:/app/utils
+        - ./index.js:/app/index.js
+    command: npm run serve
+    environment:
+        NODE_ENV: production
+mongodb:
+    volumes_from:
+        - data

@@ -20,6 +20,6 @@ RUN mkdir -p /app
 WORKDIR /app
 
 COPY ./package.json .
-RUN npm install --production
+RUN npm install
 
-CMD ["npm", "build"]
+CMD ["npm", "start"]
