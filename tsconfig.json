@@ -23,10 +23,13 @@
     "compileOnSave": false,
     "buildOnSave": false,
     "files": [
+        "app/components/tests/App.test.ts",
         "temp/db.ts",
         "typings/bluebird/bluebird.d.ts",
+        "typings/expect.js/expect.js.d.ts",
         "typings/faker/faker.d.ts",
         "typings/lodash/lodash.d.ts",
+        "typings/mocha/mocha.d.ts",
         "typings/sequelize/sequelize.d.ts",
         "typings/tsd.d.ts",
         "typings/validator/validator.d.ts"
