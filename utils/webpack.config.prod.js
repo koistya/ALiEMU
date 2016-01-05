@@ -4,13 +4,13 @@ var path = require('path'),
     HTMLwebpackPlugin = require('html-webpack-plugin');
 
 const PATHS = {
-  app: path.resolve(__dirname, 'app'),
-  dist: path.join(__dirname, 'dist')
+  app: path.join(__dirname, '..', '/app'),
+  dist: path.join(__dirname, '..', '/dist')
 };
 
 module.exports = {
   devtool: 'source-map',
-  entry: path.resolve(PATHS.app, 'app.js'),
+  entry: path.join(PATHS.app, 'app.js'),
   output: {
     path: PATHS.dist,
     filename: 'bundle.js'
@@ -29,7 +29,7 @@ module.exports = {
     }),
     new HTMLwebpackPlugin({
       title: 'ALiEMU',
-      template: path.resolve(PATHS.app, 'index.templ.html'),
+      template: path.join(PATHS.app, 'index.templ.html'),
       inject: 'body'
     })
   ],
@@ -38,26 +38,20 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        loader: 'awesome-typescript-loader',
-        query: {
-          plugins: ['./utils/babelRelayPlugin']
-        }
+        loader: 'awesome-typescript-loader'
       },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          plugins: ['./utils/babelRelayPlugin']
-        }
+        loader: 'babel'
       },
       {
         test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+        loaders: ['style', 'css', 'postcss', 'sass']
       },
       {
         test: /\.css$/,
-        loaders: ['style-loader', 'css-loader', 'postcss-loader']
+        loaders: ['style', 'css', 'postcss']
       }
     ]
   },

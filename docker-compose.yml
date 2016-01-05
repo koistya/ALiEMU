@@ -1,21 +1,14 @@
 app:
     build: .
-    ports:
-        - "8080:8080"
-    volumes:
-        - ./dist:/app/dist
-        - ./server:/app/server
     links:
         - postgres
 postgres:
     image: postgres
-    environment:
+    environment: # FIXME: Add determine which override this should be placed in
         POSTGRES_PASSWORD: postgres
         POSTGRES_USER: postgres
         POSTGRES_DB: aliemu
         PGDATA: /var/lib/postgresql/data/pgdata
-    volumes_from:
-        - data
 data:
     image: busybox
     volumes:

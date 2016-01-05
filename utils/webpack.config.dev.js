@@ -6,12 +6,12 @@ module.exports = {
   entry: [
     'eventsource-polyfill',
     'webpack-hot-middleware/client',
-    path.resolve(__dirname, 'app', 'app.js')
+    path.join(__dirname, '..', 'app/app.js')
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, '..', 'dist'),
     filename: 'bundle.js',
-    publicPath: '/dist/'
+    publicPath: '/'
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
@@ -22,26 +22,20 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        loader: 'awesome-typescript-loader',
-        query: {
-          plugins: ['./utils/babelRelayPlugin']
-        }
+        loader: 'awesome-typescript-loader'
       },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          plugins: ['./utils/babelRelayPlugin']
-        }
+        loader: 'babel'
       },
       {
         test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
+        loaders: ['style', 'css', 'sass']
       },
       {
         test: /\.css$/,
-        loaders: ['style-loader', 'css-loader']
+        loaders: ['style', 'css']
       }
     ]
   },
