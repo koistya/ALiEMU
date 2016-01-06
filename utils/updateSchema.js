@@ -24,6 +24,6 @@ import { introspectionQuery, printSchema } from 'graphql/utilities';
 
 // Save user readable type system shorthand of schema
 fs.writeFileSync(
-  path.resolve(__dirname, '../server/schema.graphql'),
+  path.join(__dirname, '../server/schema.graphql'),
   printSchema(Schema)
 );

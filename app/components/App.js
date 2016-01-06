@@ -5,12 +5,22 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>Widget list</h1>
-        <ul>
-          {this.props.viewer.widgets.edges.map(edge =>
-            <li key={edge.node.id}>{edge.node.name} (ID: {edge.node.id})</li>
-          )}
-        </ul>
+        <h1>Test list</h1>
+          {this.props.root.users.edges.map(edge => {
+            return(
+              <div key={edge.node.id}>
+                <h2>Posts by {edge.node.firstName} {edge.node.lastName}...</h2>
+                {edge.node.posts.edges.map(postEdge => {
+                  return(
+                    <ul key={postEdge.node.id}>
+                      <li>Title: {postEdge.node.title}</li>
+                      <li>Content: {postEdge.node.content}</li>
+                    </ul>
+                  );
+                })}
+              </div>
+            );
+          })}
       </div>
     );
   }
@@ -18,17 +28,27 @@ class App extends React.Component {
 
 export default Relay.createContainer(App, {
   fragments: {
-    viewer: () => Relay.QL`
-      fragment on Viewer {
-        widgets(first: 10) {
+    root: () => Relay.QL`
+      fragment on Root {
+        users(first: 8) {
           edges {
             node {
-              id,
-              name,
-            },
-          },
-        },
-      }
+              firstName,
+              lastName,
+              id
+              posts(first: 10){
+                edges {
+                  node {
+                    id,
+                    title,
+                    content
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
     `,
   },
 });
