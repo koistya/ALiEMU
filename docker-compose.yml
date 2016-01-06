@@ -4,7 +4,7 @@ app:
         - postgres
 postgres:
     image: postgres
-    environment: # FIXME: Add determine which override this should be placed in
+    environment: # FIXME: Use better passwords
         POSTGRES_PASSWORD: postgres
         POSTGRES_USER: postgres
         POSTGRES_DB: aliemu

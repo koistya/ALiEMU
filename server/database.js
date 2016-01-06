@@ -4,11 +4,12 @@ import Faker from 'faker';
 
 const Db = new Sequelize(
   'aliemu',
-  'postgres',
-  'postgres',
+  process.env.POSTGRES_ENV_POSTGRES_USER || 'postgres',
+  process.env.POSTGRES_ENV_POSTGRES_PASSWORD || 'postgres',
   {
     dialect: 'postgres',
-    host: 'localhost'
+    host: 'postgres',
+    port: 5432,
   }
 );
 

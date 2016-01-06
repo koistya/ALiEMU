@@ -51,6 +51,33 @@ const { nodeInterface, nodeField } = nodeDefinitions(
   }
 )
 
+const RootType = new GraphQLObjectType({
+  name: 'Root',
+  description: 'Root Object',
+  fields: () => ({
+    id: globalIdField('Root'),
+    users: {
+      type: userConnection,
+      description: 'All users within this application',
+      args: connectionArgs,
+      resolve: async (_, args) => {
+        let users = await Db.models.user.findAll();
+        return connectionFromArray(users, args);
+      }
+    },
+    posts: {
+      type: postConnection,
+      description: 'All posts within this application',
+      args: connectionArgs,
+      resolve: async (_, args) => {
+        let posts = await Db.models.post.findAll();
+        return connectionFromArray(posts, args);
+      }
+    },
+  }),
+  interfaces: [nodeInterface],
+});
+
 const UserType = new GraphQLObjectType({
   name: 'User',
   description: 'This represents a user',
@@ -98,33 +125,6 @@ const PostType = new GraphQLObjectType({
       type: UserType,
       desctiption: 'The author of the post',
       resolve: (post) => post.getUser(),
-    },
-  }),
-  interfaces: [nodeInterface],
-});
-
-const RootType = new GraphQLObjectType({
-  name: 'Root',
-  description: 'Root Object',
-  fields: () => ({
-    id: globalIdField('Root'),
-    users: {
-      type: userConnection,
-      description: 'All users within this application',
-      args: connectionArgs,
-      resolve: async (_, args) => {
-        let users = await Db.models.user.findAll();
-        return connectionFromArray(users, args);
-      }
-    },
-    posts: {
-      type: postConnection,
-      description: 'All posts within this application',
-      args: connectionArgs,
-      resolve: async (_, args) => {
-        let posts = await Db.models.post.findAll();
-        return connectionFromArray(posts, args);
-      }
     },
   }),
   interfaces: [nodeInterface],
